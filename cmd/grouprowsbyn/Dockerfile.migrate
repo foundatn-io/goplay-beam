@@ -1,0 +1,15 @@
+ARG BASE_IMAGE_CLI=sjdaws/spanner-cli:v1.0.0
+ARG BASE_IMAGE_RUNTIME=google/cloud-sdk:308.0.0-alpine
+
+FROM ${BASE_IMAGE_CLI} as builder
+FROM ${BASE_IMAGE_RUNTIME}
+
+RUN curl -L https://github.com/RoryQ/wrench/releases/download/v1.1.2/wrench-v1.1.2-linux-amd64.tar.gz | tar xvz -C /usr/local/bin wrench
+
+COPY --from=builder /go/bin/spanner-cli /usr/local/bin
+COPY cmd/grouprowsbyn/migrate.sh migrate.sh
+COPY cmd/grouprowsbyn/migrations migrations
+
+RUN chmod +x ./migrate.sh
+
+CMD ["./migrate.sh"]

@@ -1,0 +1,5 @@
+CREATE TABLE Word
+(
+    Id       INT64 NOT NULL,
+    Value    STRING(1024) NOT NULL,
+) PRIMARY KEY(Id);

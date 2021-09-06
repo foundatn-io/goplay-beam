@@ -1,0 +1,53 @@
+version: '3.6'
+services:
+  grouprowsbyn:
+    build:
+      context: .
+      dockerfile: cmd/grouprowsbyn/Dockerfile
+    environment:
+      - SPANNER_EMULATOR_HOST=spanner:9010
+    depends_on:
+      - migrate
+    links:
+      - spanner
+
+  spanner:
+    image: roryq/spanner-emulator:1.2.0
+    environment:
+      - SPANNER_PROJECT_ID=test-project
+      - SPANNER_INSTANCE_ID=test-instance
+      - SPANNER_DATABASE_ID=database
+    ports:
+      - "9010:9010"
+      - "9020:9020"
+
+  spanner-health-check:
+    image: curlimages/curl:latest
+    depends_on:
+      - spanner
+    healthcheck:
+      test: |
+        curl --fail http://spanner:9020/v1/projects/test-project/instances/test-instance/databases/database
+      timeout: 60s
+      interval: 5s
+      retries: 10
+      start_period: 15s
+    entrypoint: |
+      tail -f /dev/null
+    links:
+      - spanner
+
+  migrate:
+    build:
+      context: .
+      dockerfile: cmd/grouprowsbyn/Dockerfile.migrate
+    depends_on:
+      spanner-health-check:
+        condition: service_healthy
+    environment:
+      - SPANNER_EMULATOR_HOST=spanner:9010
+      - SPANNER_PROJECT_ID=test-project
+      - SPANNER_INSTANCE_ID=test-instance
+      - SPANNER_DATABASE_ID=database
+    links:
+      - spanner
