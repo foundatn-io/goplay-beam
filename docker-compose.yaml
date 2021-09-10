@@ -11,6 +11,20 @@ services:
     links:
       - spanner
 
+  streaminginserts:
+    build:
+      context: .
+      dockerfile: cmd/streaminginserts/Dockerfile
+    environment:
+      - SPANNER_EMULATOR_HOST=spanner:9010
+      - PUBSUB_EMULATOR_HOST=pubsub:8085
+    depends_on:
+      - migrate
+      - pubsub
+    links:
+      - spanner
+      - pubsub
+
   spanner:
     image: roryq/spanner-emulator:1.2.0
     environment:
@@ -51,3 +65,15 @@ services:
       - SPANNER_DATABASE_ID=database
     links:
       - spanner
+
+  pubsub:
+    build:
+      context: .
+      dockerfile: cmd/streaminginserts/psemu/Dockerfile.pubsub
+    ports:
+      - 8085:8085
+    environment:
+      - PUBSUB_PORT=8085
+      - PUBSUB_PROJECT=test-project
+      - PUBSUB_TOPIC=test-topic
+      - PUBSUB_SUBSCRIPTION=test-sub

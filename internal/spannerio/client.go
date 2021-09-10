@@ -19,7 +19,7 @@ type Config struct {
 }
 
 func (c *Config) AsConnectionString() string {
-	return fmt.Sprintf("projects/%s/databases/%s/instances/%s", c.Project, c.Instance, c.Database)
+	return fmt.Sprintf("projects/%s/instances/%s/databases/%s", c.Project, c.Instance, c.Database)
 }
 
 func New(ctx context.Context, cfg *Config) (*Client, error) {
