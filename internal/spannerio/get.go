@@ -7,7 +7,7 @@ import (
 	"reflect"
 
 	"cloud.google.com/go/spanner"
-	"github.com/apache/beam/sdks/go/pkg/beam"
+	"github.com/apache/beam/sdks/v2/go/pkg/beam"
 	"google.golang.org/api/iterator"
 )
 
@@ -16,7 +16,7 @@ import (
 // table has more rows than t, then Read is implicitly a projection.
 func Read(s beam.Scope, conn, table string, t reflect.Type) beam.PCollection {
 	s = s.Scope("spanner.Read")
-	return query(s, conn, spanner.NewStatement(fmt.Sprintf("SELECT * from [%v]", table)), t)
+	return query(s, conn, spanner.NewStatement(fmt.Sprintf("SELECT * from %v", table)), t)
 }
 
 // Query executes a query. The output must have a schema compatible with the given

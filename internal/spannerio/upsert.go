@@ -11,8 +11,13 @@ type UpsertMutationFn struct {
 	Table     string
 }
 
-func (u *UpsertMutationFn) ProcessElement(ctx context.Context, row interface{}, emit func(mutation *spanner.Mutation)) error {
-	m, err := spanner.InsertOrUpdateStruct(u.Table, u.Transform(row))
+func (u *UpsertMutationFn) ProcessElement(_ context.Context, row interface{}, emit func(mutation *spanner.Mutation)) error {
+	obj := row
+	if u.Transform != nil {
+		obj = u.Transform(row)
+	}
+
+	m, err := spanner.InsertOrUpdateStruct(u.Table, obj)
 	if err != nil {
 		return err
 	}
