@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/apache/beam/sdks/go/pkg/beam"
-	"github.com/apache/beam/sdks/go/pkg/beam/io/filesystem/local"
-	"github.com/apache/beam/sdks/go/pkg/beam/x/beamx"
+	"github.com/apache/beam/sdks/v2/go/pkg/beam"
+	"github.com/apache/beam/sdks/v2/go/pkg/beam/io/filesystem/local"
+	"github.com/apache/beam/sdks/v2/go/pkg/beam/x/beamx"
 	"github.com/google/uuid"
 )
 

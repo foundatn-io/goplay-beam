@@ -8,9 +8,9 @@ import (
 	"reflect"
 
 	rdm "github.com/Pallinder/go-randomdata"
-	"github.com/apache/beam/sdks/go/pkg/beam"
-	"github.com/apache/beam/sdks/go/pkg/beam/io/filesystem"
-	"github.com/apache/beam/sdks/go/pkg/beam/x/beamx"
+	"github.com/apache/beam/sdks/v2/go/pkg/beam"
+	"github.com/apache/beam/sdks/v2/go/pkg/beam/io/filesystem"
+	"github.com/apache/beam/sdks/v2/go/pkg/beam/x/beamx"
 	"github.com/google/uuid"
 
 	"github.com/foundatn-io/goplay-beam/internal/spannerio"
