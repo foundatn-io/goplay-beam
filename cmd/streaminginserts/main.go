@@ -59,6 +59,7 @@ type PubSubConfig struct {
 // prints spanner rows to output
 //
 // FIXME: does not work. beam/pubsubio only works on dataflow, not direct runner
+// ref: https://the-asf.slack.com/archives/CBD9LNKGR/p1628607306018700s
 func main() {
 	ctx := context.Background()
 	beam.Init()
