@@ -5,6 +5,7 @@ import (
 
 	"cloud.google.com/go/spanner"
 	"github.com/apache/beam/sdks/v2/go/pkg/beam"
+	"github.com/apache/beam/sdks/v2/go/pkg/beam/log"
 )
 
 func Apply(s beam.Scope, conn string, mutations []*spanner.Mutation) {
@@ -41,11 +42,13 @@ type ApplyMutationFn struct {
 }
 
 func (f *ApplyMutationFn) ProcessElement(ctx context.Context, mutations []*spanner.Mutation) error {
+	log.Info(ctx, "spannerio.Apply: building spanner client")
 	client, err := spanner.NewClient(ctx, f.Connection)
 	if err != nil {
 		return err
 	}
 
+	log.Info(ctx, "spannerio.Apply: applying mutations")
 	_, err = client.Apply(ctx, mutations)
 	if err != nil {
 		return err

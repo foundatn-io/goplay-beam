@@ -8,6 +8,7 @@ import (
 
 	"cloud.google.com/go/spanner"
 	"github.com/apache/beam/sdks/v2/go/pkg/beam"
+	"github.com/apache/beam/sdks/v2/go/pkg/beam/log"
 	"google.golang.org/api/iterator"
 )
 
@@ -38,12 +39,15 @@ type queryFn struct {
 }
 
 func (f *queryFn) ProcessElement(ctx context.Context, _ []byte, emit func(beam.X)) error {
+	log.Info(ctx, "spannerio.Query: building spanner client")
 	client, err := spanner.NewClient(ctx, f.Connection)
 	if err != nil {
 		return err
 	}
 
 	defer client.Close()
+
+	log.Info(ctx, "spannerio.Query: iterating objects")
 	it := client.ReadOnlyTransaction().Query(ctx, f.Query)
 	for {
 		val := reflect.New(f.Type.T).Interface() // val : *T
