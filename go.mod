@@ -9,6 +9,7 @@ require (
 	cloud.google.com/go/storage v1.16.0 // indirect
 	github.com/Pallinder/go-randomdata v1.2.0
 	github.com/apache/beam/sdks/v2 v2.0.0-20210910114157-3a3a84483ba1
+	github.com/foundatn-io/go-pic v0.1.8
 	github.com/google/uuid v1.3.0
 	google.golang.org/api v0.54.0
 )
