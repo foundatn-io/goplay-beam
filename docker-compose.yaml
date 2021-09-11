@@ -25,6 +25,17 @@ services:
       - spanner
       - pubsub
 
+  gopictospanner:
+    build:
+      context: .
+      dockerfile: cmd/gopictospanner/Dockerfile
+    environment:
+      - SPANNER_EMULATOR_HOST=spanner:9010
+    depends_on:
+      - migrate
+    links:
+      - spanner
+
   spanner:
     image: roryq/spanner-emulator:1.2.0
     environment:
